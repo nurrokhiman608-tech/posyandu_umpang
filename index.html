@@ -47,7 +47,8 @@ const umur=(t,on)=>{if(!t)return 0;const a=new Date(t),b=on?new Date(on):new Dat
 const umurTxt=t=>{const m=umur(t);return m<24?m+" bln":Math.floor(m/12)+" th"};
 function kel(s){if(KEL.includes(s.Status))return s.Status;if(s.Status=="Ibu Bersalin/Nifas")return"Ibu Bersalin";const m=umur(s.TglLahir);return m<12?"Bayi":m<60?"Balita":m<84?"Anak Prasekolah":m<120?"Anak Sekolah":m<228?"Remaja":m<720?"Usia Produktif":"Lansia"}
 const imt=k=>k.BB&&k.TB?+k.BB/Math.pow(+k.TB/100,2):0;
-function gizi(k,s){const i=imt(k);if(!i)return"";if(umur(s.TglLahir,k.Tanggal)<228)return"Cek z-score WHO/KMS";return i<17?"Gizi buruk":i<18.5?"Gizi kurang":i<25?"Gizi baik":"Gizi lebih"}
+const hamil=s=>kel(s)=="Ibu Hamil";
+function gizi(k,s){const i=imt(k);if(!i)return"";if(hamil(s))return"Nilai dengan LILA";if(umur(s.TglLahir,k.Tanggal)<228)return"Cek z-score WHO/KMS";return i<17?"Gizi buruk":i<18.5?"Gizi kurang":i<25?"Gizi baik":"Gizi lebih"}
 const ptm=k=>+k.Sistol>=140||+k.Diastol>=90||+k.GD>=200;
 const riw=id=>D.Kunjungan.filter(k=>k.SasaranID==id).sort((a,b)=>a.Tanggal.localeCompare(b.Tanggal));
 const bln=()=>T().slice(0,7);
@@ -77,7 +78,7 @@ function kartu(id){
   const s=D.Sasaran.find(x=>x.ID==id);if(!s)return"";const r=riw(id);
   return`<div class="card"><h2>Kartu bantu digital: ${esc(s.Nama)}</h2><p>${esc(kel(s))} | ${umurTxt(s.TglLahir)} | ${s.JK=="L"?"Laki-laki":"Perempuan"} | ${esc(s.Dusun)} | NIK ${esc(s.NIK)}</p>
   <div class="g"><div>${chart(r,"BB","Berat badan (kg)")}</div><div>${chart(r,"TB","Tinggi badan (cm)")}</div></div>
-  <h3>Riwayat pemeriksaan (${r.length} kunjungan)</h3><div class="tw"><table><tr><th>Tanggal</th><th>BB</th><th>TB</th><th>LK</th><th>LP</th><th>IMT</th><th>Status gizi</th><th>Tensi</th><th>GD</th><th>Layanan</th><th>Imunisasi</th></tr>
+  <h3>Riwayat pemeriksaan (${r.length} kunjungan)</h3><div class="tw"><table><tr><th>Tanggal</th><th>BB</th><th>TB</th><th>${hamil(s)?"LILA":"LK"}</th><th>${hamil(s)?"HB":"LP"}</th><th>IMT</th><th>Status gizi</th><th>Tensi</th><th>${hamil(s)?"Triple Eliminasi":"GD"}</th><th>Layanan</th><th>Imunisasi</th></tr>
   ${r.slice().reverse().map(k=>`<tr><td>${fd(k.Tanggal)}</td><td>${k.BB}</td><td>${k.TB}</td><td>${k.LK}</td><td>${k.LP}</td><td>${imt(k)?imt(k).toFixed(1):""}</td><td>${gizi(k,s)}</td><td>${k.Sistol?k.Sistol+"/"+k.Diastol:""} ${ptm(k)?'<span class="tag x">periksa</span>':""}</td><td>${k.GD}</td><td>${esc(k.Layanan)}</td><td>${esc(k.Imunisasi)}</td></tr>`).join("")||"<tr><td colspan=11>Belum ada pemeriksaan</td></tr>"}</table></div>
   <p class="np"><b>Pesan kesehatan:</b> ${EDU[kel(s)]}</p><button class="b o np" onclick="print()">Cetak kartu</button></div>`;
 }
@@ -107,7 +108,8 @@ periksa(){
   return`<div class="card"><label>Pilih sasaran (ketik nama atau NIK)</label><input list="dl" id="ps" onchange="pick(this.value)" placeholder="Ketik nama..."><datalist id="dl">${D.Sasaran.map(x=>`<option value="${esc(x.Nama)} | ${esc(x.NIK)}">`).join("")}</datalist></div>
   ${s?`<div class="card"><h2>Pemeriksaan baru: ${esc(s.Nama)} (${kel(s)})</h2><form onsubmit="return false"><div class="g">
   <div><label>Tanggal</label><input type="date" id="Tanggal" value="${T()}"></div>
-  ${[["BB","Berat badan (kg)"],["TB","Tinggi/panjang badan (cm)"],["LK","Lingkar kepala (cm)"],["LP","Lingkar perut (cm)"],["Sistol","Sistolik (mmHg)"],["Diastol","Diastolik (mmHg)"],["GD","Gula darah (mg/dL)"]].map(f=>`<div><label>${f[1]}</label><input type="number" step="0.1" id="${f[0]}" oninput="calc()"></div>`).join("")}
+  ${[["BB","Berat badan (kg)"],["TB","Tinggi/panjang badan (cm)"],["LK",hamil(s)?"LILA - lingkar lengan atas (cm)":"Lingkar kepala (cm)"],["LP",hamil(s)?"HB - hemoglobin (g/dL)":"Lingkar perut (cm)"],["Sistol","Sistolik (mmHg)"],["Diastol","Diastolik (mmHg)"]].map(f=>`<div><label>${f[1]}</label><input type="number" step="0.1" id="${f[0]}" oninput="calc()"></div>`).join("")}
+  ${hamil(s)?`<div><label>Pemeriksaan triple eliminasi</label><select id="GD" onchange="calc()"><option value="">Belum diperiksa</option><option>Non-reaktif (HIV, Sifilis, Hepatitis B)</option><option>Reaktif HIV</option><option>Reaktif Sifilis</option><option>Reaktif Hepatitis B</option><option>Reaktif lebih dari satu</option></select></div>`:`<div><label>Gula darah (mg/dL)</label><input type="number" step="0.1" id="GD" oninput="calc()"></div>`}
   <div class="full" id="hs" style="font-weight:700"></div></div>
   <h3>Layanan & intervensi</h3><div class="ck">${LAY.map(l=>`<label><input type="checkbox" name="ly" value="${l}">${l}</label>`).join("")}</div>
   <div class="g" style="margin-top:10px"><div><label>Imunisasi diberikan</label><input id="Imunisasi" list="im" placeholder="Contoh: Campak"><datalist id="im">${["HB0","BCG","Polio","DPT-HB-Hib","Campak","IPV","PCV","Rotavirus","HPV","Td"].map(x=>`<option>${x}`).join("")}</datalist></div><div class="full"><label>Catatan</label><input id="Catatan"></div></div>
@@ -131,7 +133,9 @@ const FS=["ID","NIK","Nama","TglLahir","JK","Status","Dusun","Alamat","Ortu","HP
 async function saveS(){const d={};FS.forEach(k=>d[k]=$(k).value);if(!d.Nama||!d.TglLahir||!d.Status)return toast("Nama, tanggal lahir, dan status wajib diisi");if(d.NIK&&!/^\d{16}$/.test(d.NIK))return toast("NIK harus 16 digit");await run("save",{sheet:"Sasaran",data:d},"Sasaran tersimpan")}
 function editS(id){const s=D.Sasaran.find(x=>x.ID==id);FS.forEach(k=>$(k).value=s[k]||"");$("Status").value=kel(s);document.querySelector("details").open=true;scrollTo(0,0)}
 function pick(v){const n=v.split(" | ")[1],s=D.Sasaran.find(x=>x.NIK==n&&n||x.Nama==v.split(" | ")[0]);if(s){SEL=s.ID;show("periksa")}}
-function calc(){const s=D.Sasaran.find(x=>x.ID==SEL),k={BB:$("BB").value,TB:$("TB").value,Tanggal:$("Tanggal").value,Sistol:$("Sistol").value,Diastol:$("Diastol").value,GD:$("GD").value};$("hs").textContent=(imt(k)?"IMT "+imt(k).toFixed(1)+" - "+gizi(k,s):"")+(ptm(k)?"   |   Perlu rujukan/pemeriksaan lanjut (PTM)":"")}
+function calc(){const s=D.Sasaran.find(x=>x.ID==SEL),k={BB:$("BB").value,TB:$("TB").value,Tanggal:$("Tanggal").value,Sistol:$("Sistol").value,Diastol:$("Diastol").value,GD:$("GD").value};let m=imt(k)?"IMT "+imt(k).toFixed(1)+" - "+gizi(k,s):"";
+  if(hamil(s)){const l=+$("LK").value,h=+$("LP").value;if(l&&l<23.5)m+="   |   LILA < 23,5 cm: risiko KEK";if(h&&h<11)m+="   |   HB < 11 g/dL: anemia";if(k.GD.startsWith("Reaktif"))m+="   |   Triple eliminasi reaktif: rujuk";}
+  if(ptm(k))m+="   |   Perlu rujukan/pemeriksaan lanjut (PTM)";$("hs").textContent=m}
 async function saveK(){const d={SasaranID:SEL};["Tanggal","BB","TB","LK","LP","Sistol","Diastol","GD","Imunisasi","Catatan"].forEach(k=>d[k]=$(k).value);d.Layanan=[...document.querySelectorAll("[name=ly]:checked")].map(x=>x.value).join(", ");if(!d.Tanggal)return toast("Tanggal wajib diisi");if(await run("save",{sheet:"Kunjungan",data:d},"Pemeriksaan tersimpan (kehadiran tercatat)"))show("periksa")}
 async function saveJ(){if(!$("jt").value||!$("jk").value)return toast("Isi tanggal dan kegiatan");await run("save",{sheet:"Jadwal",data:{Tanggal:$("jt").value,Kegiatan:$("jk").value,Lokasi:$("jl").value}},"Jadwal tersimpan")}
 async function del(n,id){if(confirm("Hapus data ini? Tidak bisa dibatalkan."))await run("del",{sheet:n,id},"Dihapus")}
