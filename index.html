@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>KEGIATAN POSYANDU ILP DESA UMPANG</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#17332f;--mu:#5d7571;--bg:#f3f6f2;--ln:#d9e3de;--m:#0e6b5e;--m2:#094d43;--w:#e8a33d;--r:#b8402f}
+*{box-sizing:border-box}body{margin:0;font-family:"Plus Jakarta Sans",system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.5}
+header{background:var(--m2);color:#fff;padding:18px 16px 0}.wrap{max-width:1100px;margin:0 auto}
+h1{margin:0;font-size:clamp(18px,4vw,28px);font-weight:800}header p{margin:2px 0 12px;color:#b9d8d1;font-size:13px}
+.top{display:flex;justify-content:space-between;gap:10px;align-items:start}
+nav{display:flex;gap:4px;overflow-x:auto}nav button{background:0;color:#b9d8d1;border:0;padding:11px 16px;font:inherit;font-weight:700;cursor:pointer;border-radius:10px 10px 0 0;white-space:nowrap}nav button.on{background:var(--bg);color:var(--m2)}
+button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid var(--w)}
+main{padding:18px 16px 60px}.card{background:#fff;border:1px solid var(--ln);border-radius:12px;padding:16px;margin-bottom:14px}
+.g{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px}.full{grid-column:1/-1}
+label{display:block;font-size:12.5px;font-weight:700;margin-bottom:3px}input,select,textarea{width:100%;padding:9px;border:1px solid var(--ln);border-radius:8px;font:inherit;background:#fff;color:var(--ink)}
+h2{margin:0 0 12px;font-size:17px}h3{margin:14px 0 8px;font-size:13px;color:var(--mu)}
+.b{background:var(--m);color:#fff;border:0;padding:10px 18px;border-radius:8px;font:inherit;font-weight:700;cursor:pointer}.b:hover{background:var(--m2)}
+.b.o{background:#fff;color:var(--m);border:1px solid var(--m)}.b.s{padding:5px 10px;font-size:12.5px}.b.d{background:var(--r)}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:end;margin-bottom:12px}.row>*{flex:1;min-width:140px}.row .b{flex:0 0 auto}
+.tw{overflow-x:auto}table{border-collapse:collapse;width:100%;font-size:13.5px}th,td{text-align:left;padding:8px 9px;border-bottom:1px solid var(--ln);white-space:nowrap}th{background:#e7efeb}
+.tag{display:inline-block;padding:2px 9px;border-radius:20px;background:#dcefe9;color:var(--m2);font-size:12px;font-weight:700}.tag.x{background:#fbe3df;color:var(--r)}
+.st{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-bottom:14px}.st div{background:#fff;border:1px solid var(--ln);border-left:6px solid var(--w);border-radius:10px;padding:10px 13px}.st b{display:block;font-size:26px;line-height:1.1}.st span{font-size:12.5px;color:var(--mu)}
+.bars{display:flex;gap:10px;align-items:end;height:130px}.bars div{flex:1;text-align:center;font-size:12px}.bars i{display:block;background:var(--m);border-radius:4px 4px 0 0;margin-bottom:3px}
+#login{max-width:380px;margin:50px auto}.ck{display:flex;gap:12px;flex-wrap:wrap}.ck label{font-weight:500;display:flex;gap:5px;align-items:center}.ck input{width:auto}
+#toast{position:fixed;bottom:16px;left:50%;transform:translateX(-50%);background:var(--ink);color:#fff;padding:9px 16px;border-radius:8px;display:none;z-index:9}
+.warn{background:#fff6e3;border:1px solid var(--w);padding:10px;border-radius:8px;font-size:14px;margin-bottom:12px}
+.pr{display:none}@media print{header,.np{display:none!important}.pr{display:block}body{background:#fff}.card{border:0}}
+</style></head><body>
+<header><div class="wrap"><div class="top"><div><h1>KEGIATAN POSYANDU ILP DESA UMPANG</h1><p>Posyandu Integrasi Layanan Primer</p></div><div id="who" style="font-size:13px;text-align:right"></div></div><nav id="nav"></nav></div></header>
+<main><div class="wrap" id="v"></div></main><div id="toast" role="status"></div>
+<script>
+// ===== ISI ALAMAT WEB APP APPS SCRIPT =====
+const API="https://script.google.com/macros/s/AKfycbyvlQZMsPp1wfjAjSWJlCLz93u185qhVIAL6MIC18y3wCKTU0q8ojrxY-Rro21WwYZQXw/exec";
+// ==========================================
+const $=i=>document.getElementById(i),esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c])),T=()=>new Date().toISOString().slice(0,10),fd=d=>d?d.split("-").reverse().join("/"):"";
+const KEL=["Ibu Hamil","Ibu Bersalin","Bayi","Balita","Anak Prasekolah","Anak Sekolah","Remaja","Usia Produktif","Lansia"];
+const LAY=["Vitamin A","TTD","PMT","Obat Cacing","Vitamin Lain"];
+const EDU={"Ibu Hamil":"Periksa kehamilan minimal 6 kali, minum tablet tambah darah setiap hari, dan makan beragam pangan bergizi.","Ibu Bersalin":"Bersalin di fasilitas kesehatan, beri ASI eksklusif 6 bulan, dan lakukan kontrol nifas.","Bayi":"ASI eksklusif sampai 6 bulan, lengkapi imunisasi dasar, timbang setiap bulan.","Balita":"Beri MP-ASI bergizi, tambahkan protein hewani, cuci tangan pakai sabun, pantau pertumbuhan tiap bulan.","Anak Prasekolah":"Biasakan sarapan, gosok gigi 2x sehari, dan dampingi anak bermain serta belajar.","Anak Sekolah":"Makan sayur dan buah, aktif bergerak, dan batasi minuman manis.","Remaja":"Minum tablet tambah darah mingguan, jaga pola makan, hindari rokok, dan jaga kesehatan jiwa.","Usia Produktif":"Cek tekanan darah dan gula darah rutin, batasi garam-gula-lemak, olahraga 30 menit per hari.","Lansia":"Cek tekanan darah dan gula darah, tetap aktif bergerak, cegah jatuh, dan konsumsi obat sesuai anjuran."};
+let S={},D={Sasaran:[],Kunjungan:[],Jadwal:[]},cur="",SEL="",tabs=[];
+const toast=m=>{const t=$("toast");t.textContent=m;t.style.display="block";clearTimeout(t.h);t.h=setTimeout(()=>t.style.display="none",2800)};
+async function call(a,x={}){if(!API)throw Error("API belum diisi");const r=await(await fetch(API,{method:"POST",body:JSON.stringify({u:S.u,p:S.p,action:a,...x})})).json();if(!r.ok)throw Error(r.error);return r}
+async function run(a,x,msg){try{await call(a,x);if(msg)toast(msg);await load();return true}catch(e){toast(e.message);return false}}
+async function load(){D=(await call("all")).d;show(cur)}
+
+// ---- logika data
+const umur=(t,on)=>{if(!t)return 0;const a=new Date(t),b=on?new Date(on):new Date();let m=(b.getFullYear()-a.getFullYear())*12+b.getMonth()-a.getMonth();if(b.getDate()<a.getDate())m--;return m};
+const umurTxt=t=>{const m=umur(t);return m<24?m+" bln":Math.floor(m/12)+" th"};
+function kel(s){if(KEL.includes(s.Status))return s.Status;if(s.Status=="Ibu Bersalin/Nifas")return"Ibu Bersalin";const m=umur(s.TglLahir);return m<12?"Bayi":m<60?"Balita":m<84?"Anak Prasekolah":m<120?"Anak Sekolah":m<228?"Remaja":m<720?"Usia Produktif":"Lansia"}
+const imt=k=>k.BB&&k.TB?+k.BB/Math.pow(+k.TB/100,2):0;
+function gizi(k,s){const i=imt(k);if(!i)return"";if(umur(s.TglLahir,k.Tanggal)<228)return"Cek z-score WHO/KMS";return i<17?"Gizi buruk":i<18.5?"Gizi kurang":i<25?"Gizi baik":"Gizi lebih"}
+const ptm=k=>+k.Sistol>=140||+k.Diastol>=90||+k.GD>=200;
+const riw=id=>D.Kunjungan.filter(k=>k.SasaranID==id).sort((a,b)=>a.Tanggal.localeCompare(b.Tanggal));
+const bln=()=>T().slice(0,7);
+
+// ---- menu & peran
+function show(t){
+  const adm=S.role!="masyarakat";
+  tabs=adm?[["beranda","Beranda"],["sasaran","Data Sasaran"],["periksa","Pemeriksaan"],["jadwal","Jadwal"],["edukasi","Edukasi"],["laporan","Laporan"]]:[["kartu","Kartu Saya"],["jadwal","Jadwal"],["edukasi","Edukasi"]];
+  if(!t||!tabs.some(x=>x[0]==t))t=tabs[0][0];cur=t;
+  $("nav").innerHTML=tabs.map(x=>`<button class="${x[0]==t?"on":""}" onclick="show('${x[0]}')">${x[1]}</button>`).join("");
+  $("who").innerHTML=`${esc(S.nama)}<br><small>${{kader:"Kader Posyandu",petugas:"Petugas Puskesmas",masyarakat:"Masyarakat"}[S.role]}</small> <button class="b s o" style="background:0;color:#fff;border-color:#fff" onclick="location.reload()">Keluar</button>`;
+  $("v").innerHTML=V[t]();if(V[t+"_"])V[t+"_"]();
+}
+function login(){
+  $("who").innerHTML="";$("nav").innerHTML="";
+  $("v").innerHTML=`<div id="login" class="card"><h2>Masuk</h2>${API?"":'<div class="warn">API belum diisi di file index.html</div>'}<form onsubmit="return false"><label>Username (Kader/Petugas) atau NIK (Masyarakat)</label><input id="lu"><label style="margin-top:8px">PIN (Masyarakat: tanggal lahir ddmmyyyy)</label><input id="lp" type="password"><button class="b" style="margin-top:12px;width:100%" id="lb">Masuk</button></form></div>`;
+  $("lb").onclick=async()=>{S={u:$("lu").value,p:$("lp").value};try{const r=await call("login");S.role=r.role;S.nama=r.nama;await load()}catch(e){toast(e.message)}};
+}
+
+// ---- grafik
+function chart(rows,key,label){
+  const p=rows.filter(r=>r[key]);if(p.length<2)return`<p style="color:var(--mu)">Grafik ${label} muncul setelah minimal 2 pemeriksaan.</p>`;
+  const v=p.map(r=>+r[key]),mn=Math.min(...v)-1,mx=Math.max(...v)+1,W=460,H=140,xs=i=>30+i*(W-45)/(p.length-1),ys=y=>H-20-(y-mn)/(mx-mn)*(H-35);
+  return`<div style="max-width:520px"><b style="font-size:13px">${label}</b><svg viewBox="0 0 ${W} ${H}" width="100%"><polyline fill="none" stroke="#0e6b5e" stroke-width="2.5" points="${v.map((y,i)=>xs(i)+","+ys(y)).join(" ")}"/>${v.map((y,i)=>`<circle cx="${xs(i)}" cy="${ys(y)}" r="3.5" fill="#e8a33d"/><text x="${xs(i)}" y="${ys(y)-8}" font-size="10" text-anchor="middle">${y}</text><text x="${xs(i)}" y="${H-4}" font-size="9" text-anchor="middle" fill="#5d7571">${p[i].Tanggal.slice(5)}</text>`).join("")}</svg></div>`;
+}
+function kartu(id){
+  const s=D.Sasaran.find(x=>x.ID==id);if(!s)return"";const r=riw(id);
+  return`<div class="card"><h2>Kartu bantu digital: ${esc(s.Nama)}</h2><p>${esc(kel(s))} | ${umurTxt(s.TglLahir)} | ${s.JK=="L"?"Laki-laki":"Perempuan"} | ${esc(s.Dusun)} | NIK ${esc(s.NIK)}</p>
+  <div class="g"><div>${chart(r,"BB","Berat badan (kg)")}</div><div>${chart(r,"TB","Tinggi badan (cm)")}</div></div>
+  <h3>Riwayat pemeriksaan (${r.length} kunjungan)</h3><div class="tw"><table><tr><th>Tanggal</th><th>BB</th><th>TB</th><th>LK</th><th>LP</th><th>IMT</th><th>Status gizi</th><th>Tensi</th><th>GD</th><th>Layanan</th><th>Imunisasi</th></tr>
+  ${r.slice().reverse().map(k=>`<tr><td>${fd(k.Tanggal)}</td><td>${k.BB}</td><td>${k.TB}</td><td>${k.LK}</td><td>${k.LP}</td><td>${imt(k)?imt(k).toFixed(1):""}</td><td>${gizi(k,s)}</td><td>${k.Sistol?k.Sistol+"/"+k.Diastol:""} ${ptm(k)?'<span class="tag x">periksa</span>':""}</td><td>${k.GD}</td><td>${esc(k.Layanan)}</td><td>${esc(k.Imunisasi)}</td></tr>`).join("")||"<tr><td colspan=11>Belum ada pemeriksaan</td></tr>"}</table></div>
+  <p class="np"><b>Pesan kesehatan:</b> ${EDU[kel(s)]}</p><button class="b o np" onclick="print()">Cetak kartu</button></div>`;
+}
+
+// ---- tampilan
+const V={
+beranda(){
+  const k=D.Kunjungan,b=bln(),hadir=new Set(k.filter(x=>x.Tanggal.startsWith(b)).map(x=>x.SasaranID)),
+  belum=D.Sasaran.filter(s=>!hadir.has(s.ID)),up=D.Jadwal.filter(j=>j.Tanggal>=T()).sort((a,c)=>a.Tanggal.localeCompare(c.Tanggal));
+  const m=[...Array(6)].map((_,i)=>{const d=new Date();d.setMonth(d.getMonth()-5+i);return d.toISOString().slice(0,7)}),n=m.map(x=>k.filter(y=>y.Tanggal.startsWith(x)).length),mx=Math.max(1,...n);
+  return`${up[0]?`<div class="warn"><b>Pengingat:</b> ${esc(up[0].Kegiatan)} pada ${fd(up[0].Tanggal)} di ${esc(up[0].Lokasi)}</div>`:""}
+  <div class="st"><div><b>${D.Sasaran.length}</b><span>Total sasaran</span></div><div><b>${hadir.size}</b><span>Hadir bulan ini</span></div><div><b>${belum.length}</b><span>Belum berkunjung bulan ini</span></div><div><b>${k.filter(x=>ptm(x)).length}</b><span>Temuan PTM</span></div></div>
+  <div class="card"><h2>Tren kunjungan 6 bulan</h2><div class="bars">${n.map((v,i)=>`<div><i style="height:${v/mx*100}px"></i>${v}<br>${m[i].slice(5)}</div>`).join("")}</div></div>
+  <div class="card"><h2>Sasaran per kelompok siklus hidup</h2><div class="g">${KEL.map(x=>`<div><span class="tag">${x}</span> <b>${D.Sasaran.filter(s=>kel(s)==x).length}</b></div>`).join("")}</div></div>
+  <div class="card"><h2>Belum berkunjung bulan ini</h2><p>${belum.slice(0,30).map(s=>esc(s.Nama)).join(", ")||"Semua sasaran sudah hadir."}</p></div>`},
+sasaran(){
+  return`<div class="card"><details><summary class="b" style="display:inline-block">+ Daftarkan sasaran</summary><form id="sf" onsubmit="return false" style="margin-top:12px"><input type="hidden" id="ID"><div class="g">
+  <div><label>NIK</label><input id="NIK" maxlength="16" inputmode="numeric"></div><div><label>Nama lengkap</label><input id="Nama"></div><div><label>Tanggal lahir</label><input type="date" id="TglLahir"></div>
+  <div><label>Jenis kelamin</label><select id="JK"><option>L</option><option>P</option></select></div><div><label>Status (kelompok sasaran)</label><select id="Status"><option value="">Pilih status</option>${KEL.map(x=>`<option>${x}</option>`).join("")}</select></div>
+  <div><label>Dusun/RT</label><input id="Dusun"></div><div><label>Nama orang tua/wali</label><input id="Ortu"></div><div><label>No. HP</label><input id="HP"></div><div class="full"><label>Alamat</label><input id="Alamat"></div></div>
+  <button class="b" style="margin-top:12px" onclick="saveS()">Simpan sasaran</button></form></details></div>
+  <div class="card"><div class="row"><div><label>Cari nama/NIK</label><input id="q" oninput="listS()"></div><div><label>Kelompok</label><select id="fk" onchange="listS()"><option value="">Semua</option>${KEL.map(x=>`<option>${x}</option>`).join("")}</select></div></div>
+  <div class="tw"><table><thead><tr><th>Nama</th><th>Kelompok</th><th>Umur</th><th>Dusun</th><th>Kunjungan</th><th>Terakhir</th><th></th></tr></thead><tbody id="sb"></tbody></table></div></div>`},
+sasaran_(){listS()},
+periksa(){
+  const s=D.Sasaran.find(x=>x.ID==SEL);
+  return`<div class="card"><label>Pilih sasaran (ketik nama atau NIK)</label><input list="dl" id="ps" onchange="pick(this.value)" placeholder="Ketik nama..."><datalist id="dl">${D.Sasaran.map(x=>`<option value="${esc(x.Nama)} | ${esc(x.NIK)}">`).join("")}</datalist></div>
+  ${s?`<div class="card"><h2>Pemeriksaan baru: ${esc(s.Nama)} (${kel(s)})</h2><form onsubmit="return false"><div class="g">
+  <div><label>Tanggal</label><input type="date" id="Tanggal" value="${T()}"></div>
+  ${[["BB","Berat badan (kg)"],["TB","Tinggi/panjang badan (cm)"],["LK","Lingkar kepala (cm)"],["LP","Lingkar perut (cm)"],["Sistol","Sistolik (mmHg)"],["Diastol","Diastolik (mmHg)"],["GD","Gula darah (mg/dL)"]].map(f=>`<div><label>${f[1]}</label><input type="number" step="0.1" id="${f[0]}" oninput="calc()"></div>`).join("")}
+  <div class="full" id="hs" style="font-weight:700"></div></div>
+  <h3>Layanan & intervensi</h3><div class="ck">${LAY.map(l=>`<label><input type="checkbox" name="ly" value="${l}">${l}</label>`).join("")}</div>
+  <div class="g" style="margin-top:10px"><div><label>Imunisasi diberikan</label><input id="Imunisasi" list="im" placeholder="Contoh: Campak"><datalist id="im">${["HB0","BCG","Polio","DPT-HB-Hib","Campak","IPV","PCV","Rotavirus","HPV","Td"].map(x=>`<option>${x}`).join("")}</datalist></div><div class="full"><label>Catatan</label><input id="Catatan"></div></div>
+  <button class="b" style="margin-top:12px" onclick="saveK()">Simpan pemeriksaan</button></form></div>${kartu(SEL)}`:""}`},
+kartu(){return D.Sasaran[0]?kartu(D.Sasaran[0].ID):"<div class='card'>Data Anda belum ditemukan.</div>"},
+jadwal(){
+  const w=S.role=="petugas",j=D.Jadwal.slice().sort((a,b)=>a.Tanggal.localeCompare(b.Tanggal));
+  return`${w?`<div class="card"><h2>Tambah jadwal</h2><div class="row"><div><label>Tanggal</label><input type="date" id="jt"></div><div><label>Kegiatan</label><input id="jk" placeholder="Posyandu Dusun 1"></div><div><label>Lokasi</label><input id="jl"></div><button class="b" onclick="saveJ()">Simpan</button></div></div>`:""}
+  <div class="card"><h2>Jadwal Posyandu</h2><div class="tw"><table><tr><th>Tanggal</th><th>Kegiatan</th><th>Lokasi</th><th></th></tr>${j.map(x=>`<tr><td>${fd(x.Tanggal)} ${x.Tanggal>=T()?'<span class="tag">akan datang</span>':""}</td><td>${esc(x.Kegiatan)}</td><td>${esc(x.Lokasi)}</td><td>${w?`<button class="b s d" onclick="del('Jadwal','${x.ID}')">Hapus</button>`:""}</td></tr>`).join("")||"<tr><td colspan=4>Belum ada jadwal</td></tr>"}</table></div></div>`},
+edukasi(){const own=S.role=="masyarakat"&&D.Sasaran[0]?kel(D.Sasaran[0]):"";return`<div class="card"><h2>Edukasi dan pesan pencegahan</h2>${KEL.slice().sort(a=>a==own?-1:0).map(x=>`<p><span class="tag">${x}${x==own?" (untuk Anda)":""}</span><br>${EDU[x]}</p>`).join("")}</div>`},
+laporan(){
+  return`<div class="card np"><div class="row"><div><label>Bulan</label><input type="month" id="lb" value="${bln()}" onchange="rep()"></div><div><label>Dusun</label><select id="ld" onchange="rep()"><option value="">Semua (desa)</option>${[...new Set(D.Sasaran.map(s=>s.Dusun))].map(x=>`<option>${esc(x)}</option>`).join("")}</select></div><button class="b" onclick="print()">Cetak</button><button class="b o" onclick="csv()">Unduh CSV</button></div></div><div class="card" id="rp"></div>`},
+laporan_(){rep()}
+};
+
+// ---- aksi
+function listS(){
+  const q=($("q").value||"").toLowerCase(),f=$("fk").value;
+  $("sb").innerHTML=D.Sasaran.filter(s=>(!q||(s.Nama+s.NIK).toLowerCase().includes(q))&&(!f||kel(s)==f)).map(s=>{const r=riw(s.ID);return`<tr><td><b>${esc(s.Nama)}</b></td><td><span class="tag">${kel(s)}</span></td><td>${umurTxt(s.TglLahir)}</td><td>${esc(s.Dusun)}</td><td>${r.length}</td><td>${r.length?fd(r[r.length-1].Tanggal):"-"}</td><td><button class="b s" onclick="SEL='${s.ID}';show('periksa')">Periksa</button> <button class="b s o" onclick="editS('${s.ID}')">Ubah</button> <button class="b s d" onclick="del('Sasaran','${s.ID}')">Hapus</button></td></tr>`}).join("")||"<tr><td colspan=7>Belum ada data</td></tr>"}
+const FS=["ID","NIK","Nama","TglLahir","JK","Status","Dusun","Alamat","Ortu","HP"];
+async function saveS(){const d={};FS.forEach(k=>d[k]=$(k).value);if(!d.Nama||!d.TglLahir||!d.Status)return toast("Nama, tanggal lahir, dan status wajib diisi");if(d.NIK&&!/^\d{16}$/.test(d.NIK))return toast("NIK harus 16 digit");await run("save",{sheet:"Sasaran",data:d},"Sasaran tersimpan")}
+function editS(id){const s=D.Sasaran.find(x=>x.ID==id);FS.forEach(k=>$(k).value=s[k]||"");$("Status").value=kel(s);document.querySelector("details").open=true;scrollTo(0,0)}
+function pick(v){const n=v.split(" | ")[1],s=D.Sasaran.find(x=>x.NIK==n&&n||x.Nama==v.split(" | ")[0]);if(s){SEL=s.ID;show("periksa")}}
+function calc(){const s=D.Sasaran.find(x=>x.ID==SEL),k={BB:$("BB").value,TB:$("TB").value,Tanggal:$("Tanggal").value,Sistol:$("Sistol").value,Diastol:$("Diastol").value,GD:$("GD").value};$("hs").textContent=(imt(k)?"IMT "+imt(k).toFixed(1)+" - "+gizi(k,s):"")+(ptm(k)?"   |   Perlu rujukan/pemeriksaan lanjut (PTM)":"")}
+async function saveK(){const d={SasaranID:SEL};["Tanggal","BB","TB","LK","LP","Sistol","Diastol","GD","Imunisasi","Catatan"].forEach(k=>d[k]=$(k).value);d.Layanan=[...document.querySelectorAll("[name=ly]:checked")].map(x=>x.value).join(", ");if(!d.Tanggal)return toast("Tanggal wajib diisi");if(await run("save",{sheet:"Kunjungan",data:d},"Pemeriksaan tersimpan (kehadiran tercatat)"))show("periksa")}
+async function saveJ(){if(!$("jt").value||!$("jk").value)return toast("Isi tanggal dan kegiatan");await run("save",{sheet:"Jadwal",data:{Tanggal:$("jt").value,Kegiatan:$("jk").value,Lokasi:$("jl").value}},"Jadwal tersimpan")}
+async function del(n,id){if(confirm("Hapus data ini? Tidak bisa dibatalkan."))await run("del",{sheet:n,id},"Dihapus")}
+function repData(){
+  const b=$("lb").value,dd=$("ld").value,ss=D.Sasaran.filter(s=>!dd||s.Dusun==dd),ids=new Set(ss.map(s=>s.ID)),kk=D.Kunjungan.filter(k=>k.Tanggal.startsWith(b)&&ids.has(k.SasaranID));
+  return KEL.map(x=>{const a=ss.filter(s=>kel(s)==x),i=new Set(a.map(s=>s.ID)),k=kk.filter(y=>i.has(y.SasaranID));return[x,a.length,a.filter(s=>s.JK=="L").length,a.filter(s=>s.JK=="P").length,new Set(k.map(y=>y.SasaranID)).size,k.filter(y=>y.Imunisasi).length,k.filter(y=>y.Layanan.includes("Vitamin A")).length,k.filter(y=>y.Layanan.includes("TTD")).length,k.filter(ptm).length]})}
+function rep(){const r=repData();$("rp").innerHTML=`<h2>Laporan Posyandu ILP Desa Umpang - ${$("lb").value}${$("ld").value?" - "+esc($("ld").value):""}</h2><p>Rekap kolektif (demografi agregat, tanpa data pribadi) untuk Puskesmas dan Dinas Kesehatan.</p><div class="tw"><table><tr><th>Kelompok</th><th>Sasaran</th><th>L</th><th>P</th><th>Hadir</th><th>Imunisasi</th><th>Vit A</th><th>TTD</th><th>Temuan PTM</th></tr>${r.map(x=>`<tr>${x.map(v=>`<td>${v}</td>`).join("")}</tr>`).join("")}<tr><th>Total</th>${[1,2,3,4,5,6,7,8].map(i=>`<th>${r.reduce((a,x)=>a+x[i],0)}</th>`).join("")}</tr></table></div>`}
+function csv(){const r=[["Kelompok","Sasaran","L","P","Hadir","Imunisasi","VitA","TTD","PTM"],...repData()],a=document.createElement("a");a.href=URL.createObjectURL(new Blob(["\ufeff"+r.map(x=>x.join(",")).join("\n")],{type:"text/csv"}));a.download="rekap-posyandu-umpang.csv";a.click()}
+login();
+</script></body></html>
